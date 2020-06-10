@@ -15,6 +15,7 @@ class Game {
       this.bodies = []
       // add the enemies to the array
       this.bodies = this.bodies.concat(new Log(this, gameSize), new Snake(this, gameSize))
+      this.bodies = this.bodies.concat(new Otter(this, gameSize))
     //   this.bodies = this.bodies.concat(new Log (this, gameSize))
       
       let animate = () => {
@@ -30,18 +31,12 @@ class Game {
 
     drawOtter (context, gameSize) {
         context.clearRect(0, 0, gameSize.x, gameSize.y)
-        // context.fillStyle = 'black'
         let startingXPosition = this.otter.center.x - this.otter.size.x / 2
         let startingYPosition = this.otter.center.y - this.otter.size.y / 2
         
         let imageUrl = new Image()
         imageUrl.src = '../images/otter.png'
         context.drawImage(imageUrl, startingXPosition, startingYPosition)
-
-       
-        // let otterWidth = this.otter.size.x
-        // let otterHeight = this.otter.size.y
-        // context.fillRect(startingXPosition, startingYPosition, otterWidth, otterHeight)
     }
 
     drawEnemies (context, gameSize) {
@@ -57,32 +52,23 @@ class Game {
     }
 
     drawLog (context) {
-        context.fillStyle = 'red'
         let startingX = this.log.center.x - this.log.size.x / 2
         let startingY = this.log.center.y - this.log.size.y 
-        let logWidth = this.log.size.x
-        let logHeight = this.log.size.y
-        context.fillRect(startingX, startingY, logWidth, logHeight)
+
+        let imageUrl = new Image()
+        imageUrl.src = '../images/log.png'
+        context.drawImage(imageUrl, startingX, startingY)
+
     }
 
     drawSnake (context, gameSize) {
-        context.fillStyle = 'blue'
         let startingX = this.snake.center.x - this.snake.size.x / 2
         let startingY = this.snake.center.y - this.snake.size.y 
-        let snakeWidth = this.snake.size.x
-        let snakeHeight = this.snake.size.y
-        context.fillRect(startingX, startingY, snakeWidth, snakeHeight)
 
-    //     context.fillStyle = 'blue'
-    //     context.fillRect(this.center.x, this.center.y, this.size.x, this.size.y)
+        let imageUrl = new Image()
+        imageUrl.src = '../images/snake.png'
+        context.drawImage(imageUrl, startingX, startingY)
 
-    //     if (this.center.dir === 'D') {
-    //         if (this.center.y >- this.gameSize.y + this.size.y) {
-    //             this.center = this.generateStart(this.gameSize)
-    //         } else {
-    //             this.center.y += 6
-    //         }
-    //     }
         
     }
 
@@ -137,21 +123,18 @@ class Snake {
         this.center = { x: gameSize.x / 1.5, y: gameSize.y - this.size.y * 23 }
     }
     
-    generateStart (gameSize) {
-        let startingPositionOptions = ['Top']
-        let startPosition = startingPositionOptions[Math.floor(Math.random () * startingPositionOptions.length)]
+    // generateStart (gameSize) {
+    //     let startingPositionOptions = ['Top']
+    //     let startPosition = startingPositionOptions[Math.floor(Math.random () * startingPositionOptions.length)]
 
-        if (startPosition ===  'Top') {
-            return {x: Math.random() * gameSize.x, y: 0 - this.size.y, dir: 'D'}
-        }
-    }
+    //     if (startPosition ===  'Top') {
+    //         return {x: Math.random() * gameSize.x, y: 0 - this.size.y, dir: 'D'}
+    //     }
+    // }
     
-    update (context) {
+    update () {
         console.log('enermy update called')
-  
-        
-        
-        
+
         // this.startPosition
        
         let ychange = Math.floor(Math.random()*6)

@@ -10,6 +10,7 @@ html {
 }
 
 #pixel-run {
-  
+  background-image: url(images/Water-forOtters.png);
+  background-size: cover;
     /* background-color: grey; */
 }
