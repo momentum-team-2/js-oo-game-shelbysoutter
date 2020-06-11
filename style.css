@@ -4,13 +4,9 @@ html {
 
 .flex-box {
     text-align: center;
-    /* background-image: url(../../images/Water-forOtters.png); */
-    /* background-image: url(../../game/images/Water-forOtters.png);
-    background-size: cover; */
 }
 
 #pixel-run {
   background-image: url(images/Water-forOtters.png);
   background-size: cover;
-    /* background-color: grey; */
 }
