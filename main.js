@@ -9,9 +9,7 @@ class Game {
 
       this.tickCount = 0
       this.otter = new Otter (gameSize)
-      this.log = new Log (gameSize)
-      this.snake = new Snake (gameSize)
-    //   this.fish = new Fish (gameSize)
+     
 
       this.bodies = []
       // add the enemies to the array
@@ -21,25 +19,26 @@ class Game {
       
       let animate = () => {
         this.tickCount += 1
-        this.tickCount % 60
+        this.tickCount %= 60
         if (this.tickCount === 0) {
               this.bodies = this.bodies.concat(createEnemy(this))
               console.log('animate')
           } 
           this.update ()
           
-        // for (let body of this.bodies) {
-        //     if (body instanceof Otter === true ) {
-        //         this.drawOtter(context, gameSize)
-        //     } else if (body instanceof Snake === true) {
-        //         this.drawSnake(context, gameSize)
-        //     } else if (body instanceof Log === true) {
-        //         this.drawLog(context, gameSize)
-        //     }
-        // }
-          this.drawOtter(context, gameSize)
-          this.drawLog(context, gameSize)
-          this.drawSnake(context, gameSize)
+        for (let body of this.bodies) {
+            if (body instanceof Otter === true ) {
+                this.drawOtter(context, gameSize)
+            } else if (body instanceof Snake === true) {
+                this.drawSnake(context, gameSize, body)
+            } else if (body instanceof Log === true) {
+                this.drawLog(context, gameSize, body)
+            }
+        }
+
+        //   this.drawOtter(context, gameSize)
+        //   this.drawLog(context, gameSize)
+        //   this.drawSnake(context, gameSize)
 
         requestAnimationFrame(animate)
       }
@@ -69,14 +68,15 @@ class Game {
 
 
     update () {
-        this.otter.update ()
-        this.log.update ()
-        this.snake.update ()
+        this.otter.update()
+        for (let body of this.bodies) {
+            body.update()
+        }
     }
 
-    drawLog (context) {
-        let startingX = this.log.center.x - this.log.size.x / 2
-        let startingY = this.log.center.y - this.log.size.y 
+    drawLog (context, gameSize, log) {
+        let startingX = log.center.x - log.size.x / 2
+        let startingY = log.center.y - log.size.y 
 
         let imageUrl = new Image()
         imageUrl.src = '../images/log.png'
@@ -84,9 +84,9 @@ class Game {
 
     }
 
-    drawSnake (context) {
-        let startingX = this.snake.center.x - this.snake.size.x / 2
-        let startingY = this.snake.center.y - this.snake.size.y 
+    drawSnake (context, gameSize, snake) {
+        let startingX = snake.center.x - snake.size.x / 2
+        let startingY = snake.center.y - snake.size.y 
 
         let imageUrl = new Image()
         imageUrl.src = '../images/snake.png'
@@ -117,12 +117,12 @@ class Otter {
 class Log {
     constructor (gameSize) {
         this.size = { x: 25, y: 25 }
-        this.center = { x: gameSize.x / 2, y: gameSize.y - this.size.y * 23 }
+        this.center = { x: Math.random() * gameSize.x, y: 0 }
         this.moveY = 0
         this.speedY = Math.random() * 4
     }
     update () {
-        if (this.moveY < -10 || this.moveY > 600) {
+        if (this.moveY < -10 || this.moveY > 650) {
             this.speedY += -this.speedY
         }
         
@@ -135,14 +135,14 @@ class Log {
 
 // Snake (enemy 2)
 class Snake {
-    constructor (gameSize) {
+    constructor (center) {
         this.size = { x: 25, y: 25 }
-        this.center = { x: gameSize.x / 1.5, y: gameSize.y - this.size.y * 23 }
+        this.center = center
         this.moveY = 0
         this.speedY = Math.random() * 4
     }
     update () {
-        if (this.moveY < -10 || this.moveY > 600) {
+        if (this.moveY < -10 || this.moveY > 650) {
             this.speedY += -this.speedY
         }
        
@@ -151,12 +151,12 @@ class Snake {
     }
 }
 
-function createEnemy (game) {
+function createEnemy () {
     let enemy = []
     for (let i = 0; i < 1; i++) {
-        let x = Math.random() * 300
-        let y = -80
-        enemy.push (new Snake(game, {x: x, y: y}), new Log(game, {x: x, y: y}))
+        let x = Math.random() * 400
+        let y = -10
+        enemy.push (new Snake({x: x, y: y}), new Log({x: x, y: y}))
     }
     return enemy
 }
