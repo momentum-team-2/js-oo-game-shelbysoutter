@@ -12,19 +12,19 @@ class Game {
      
 
       this.bodies = []
-      // add the enemies to the array
-      this.bodies = this.bodies.concat(createEnemy(this))
+    
       this.bodies = this.bodies.concat(new Otter(this, gameSize))
-    //   this.bodies = this.bodies.concat(new Log (this, gameSize))
+      this.bodies = this.bodies.concat(createEnemy(this))
       
       let animate = () => {
+        this.update ()
         this.tickCount += 1
         this.tickCount %= 60
         if (this.tickCount === 0) {
               this.bodies = this.bodies.concat(createEnemy(this))
               console.log('animate')
-          } 
-          this.update ()
+        } 
+          
           
         for (let body of this.bodies) {
             if (body instanceof Otter === true ) {
@@ -36,24 +36,26 @@ class Game {
             }
         }
 
-        //   this.drawOtter(context, gameSize)
-        //   this.drawLog(context, gameSize)
-        //   this.drawSnake(context, gameSize)
-
         requestAnimationFrame(animate)
       }
       animate ()
     }
 
-    // update () {
-    //     let noCollision = (b1) => {
-    //         return this.bodies.filter(function (b2) { return contact(b1, b2)}.length === 0)
-    //     }
-    //     this.bodies = this.bodies.filter(noCollision)
-    //     for (let i=0; i < this.bodies.lenth; i++) {
-    //         this.bodies[i].update()
-    //     }
-    // }
+    update () {
+        console.log('whell')
+        let isColliding = (otter) => {
+            return this.bodies.filter(function (b2) { return contact(otter, b2)}).length > 0
+        }
+        for (let i=1; i < this.bodies.length; i++) {
+            if (isColliding(this.bodies[0]), this.bodies[i]) {
+                console.log('COLLISION COMMENCED')
+            }
+        }
+        for (let i=0; i < this.bodies.length; i++) {
+            this.bodies[i].update()
+            
+        }
+    }
 
 
     drawOtter (context, gameSize) {
@@ -67,12 +69,12 @@ class Game {
     }
 
 
-    update () {
-        this.otter.update()
-        for (let body of this.bodies) {
-            body.update()
-        }
-    }
+    // update () {
+    //     this.otter.update()
+    //     for (let body of this.bodies) {
+    //         body.update()
+    //     }
+    // }
 
     drawLog (context, gameSize, log) {
         let startingX = log.center.x - log.size.x / 2
@@ -99,7 +101,7 @@ class Game {
 // Otter (player)
 class Otter {
     constructor (gameSize) {
-        this.size = { x: 35, y: 35 }
+        this.size = { x: 40, y: 40 }
         this.center = { x: gameSize.x / 2, y: gameSize.y - this.size.y}
         this.keyboarder = Keyboarder
     }
@@ -119,7 +121,7 @@ class Log {
         this.size = { x: 25, y: 25 }
         this.center = { x: Math.random() * gameSize.x, y: 0 }
         this.moveY = 0
-        this.speedY = Math.random() * 4
+        this.speedY = Math.random() * 5
     }
     update () {
         if (this.moveY < -10 || this.moveY > 650) {
@@ -139,7 +141,7 @@ class Snake {
         this.size = { x: 25, y: 25 }
         this.center = center
         this.moveY = 0
-        this.speedY = Math.random() * 4
+        this.speedY = Math.random() * 5
     }
     update () {
         if (this.moveY < -10 || this.moveY > 650) {
@@ -174,11 +176,9 @@ function contact (b1, b2) {
 
 
 let game = new Game
-// window.addEventListener('load', function () {
-//     new Game()
-// })
 
-// const newGame = document.querySelector('#start')
-// newGame.addEventListener('submit', function ()) {
-//     new Game ()
-// }
+const newGame = document.querySelector('#start')
+newGame.addEventListener('click', function () {
+    new Game ()
+})
+    
